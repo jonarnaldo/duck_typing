@@ -36,9 +36,12 @@ class Demo extends React.Component {
         { ...defaultStyle, data: 't', key: 't4' },
         { ...defaultStyle, data: 'y', key: 'y5' },
         { ...defaultStyle, data: 'p', key: 'p6' },
-        { ...defaultStyle, data: 'e', key: 'e7' }
+        { ...defaultStyle, data: 'e', key: 'e7' },
+        { ...defaultStyle, data: ' ', key: ' 7' },
       ]
     })
+
+    this.nameInput.focus();
   }
 
   // n.b. return FINAL state here
@@ -121,7 +124,11 @@ class Demo extends React.Component {
           </div>
         }
         </TransitionMotion>
-        <input className="letter-input" onKeyUp={this.onInputChange} />
+        <input
+          className="letter-input"
+          onKeyUp={this.onInputChange}
+          ref={(input) => { this.nameInput = input; }}
+        />
       </div>
     );
   }
