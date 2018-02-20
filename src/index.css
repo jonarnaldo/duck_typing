@@ -6,6 +6,7 @@ body {
 
 .letters,
 .letter {
+  position: relative;
   display: inline-block;
   min-width: 2px;
 }

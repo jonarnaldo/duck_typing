@@ -1,23 +1,27 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import createReactClass from 'create-react-class';
-import {TransitionMotion, spring, presets} from 'react-motion';
+import {TransitionMotion, spring} from 'react-motion';
 
-const springConfig = () => {
-  return {stiffness: 100, damping: 17};
-}
-
-const defaultStyle = { opacity: 1};
+const defaultStyle = {
+  opacity: 1,
+  rotation: 0,
+  top: 0,
+};
 
 class Demo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [
-        { ...defaultStyle, data: 'a', key: 'a0' },
-        { ...defaultStyle, data: 'b', key: 'b1' },
-        { ...defaultStyle, data: 'c', key: 'c2' }
+        { ...defaultStyle, data: 'd', key: 'd0' },
+        { ...defaultStyle, data: 'u', key: 'u1' },
+        { ...defaultStyle, data: 'c', key: 'c2' },
+        { ...defaultStyle, data: 'k', key: 'k3' },
+        { ...defaultStyle, data: 't', key: 't4' },
+        { ...defaultStyle, data: 'y', key: 'y5' },
+        { ...defaultStyle, data: 'p', key: 'p6' },
+        { ...defaultStyle, data: 'e', key: 'e7' }
       ],
     };
 
@@ -32,14 +36,25 @@ class Demo extends React.Component {
   componentDidMount() {
   }
 
+  // n.b. return FINAL state here
   willLeave(d) {
-    return { opacity: spring(0, springConfig()) };
+    return {
+      opacity: spring(0, {stiffness: 100, damping: 17}),
+      rotation: spring(180, {stiffness: 100, damping: 17}),
+      top: spring(50, {stiffness: 100, damping: 17}),
+    };
   }
 
+  // n.b. return INITIAL state here, return plain object here
   willEnter(d) {
-    return { opacity: 0 };
+    return {
+      opacity: 0,
+      rotation: 180,
+      top: 50,
+    };
   }
 
+  // n.b. pushed items need to declare FINAL style state
   onInputChange(e) {
     const items = this.state.items;
 
@@ -52,7 +67,9 @@ class Demo extends React.Component {
       items.push({
         data: e.currentTarget.value,
         key: `${e.currentTarget.value}-${items.length - 1}`,
-        opacity: spring(1, springConfig())
+        opacity: spring(1, {stiffness: 100, damping: 17}),
+        rotation: spring(0, {stiffness: 80, damping: 17}),
+        top: spring(0, {stiffness: 100, damping: 17}),
       });
 
       e.currentTarget.value = "";
@@ -76,6 +93,8 @@ class Demo extends React.Component {
             data: item.data,
             style: {
               opacity: item.opacity,
+              top: item.top,
+              rotation: item.rotation
             },
         }))}>
         {interpolatedStyles =>
@@ -85,7 +104,11 @@ class Demo extends React.Component {
               <div
                 className="letter"
                 key={config.key}
-                style={{...config.style}} >
+                style={{
+                  opacity: config.style.opacity,
+                  // top: config.style.top,
+                  transform: `rotate3d(1,0,0,${config.style.rotation}deg)`
+                }} >
                 {config.data}
               </div>
             )
