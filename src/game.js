@@ -1,7 +1,9 @@
+var randomWords = require('random-words');
+
 class DuckTypingGame {
   constructor() {
     this.score = 0
-    this.words = ['quack', 'derp', 'marshall'];
+    this.words = randomWords(10);
     this.gameStates = {
       START: 'START',
       PLAYING: 'PLAYING',
@@ -38,6 +40,20 @@ class DuckTypingGame {
   handleCorrectWord() {
     this.removeWord();
     this.score++;
+
+    if (this.words.length) {
+      this.getCurrentWord();
+
+      if (this.currentGameState !== this.gameStates.PLAYING) {
+        this.currentGameState = this.gameStates.PLAYING;
+      }
+    } else {
+      this.currentGameState = this.gameStates.END;
+    }
+  }
+
+  handleIncorrectWord() {
+    this.removeWord();
 
     if (this.words.length) {
       this.getCurrentWord();

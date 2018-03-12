@@ -32,6 +32,7 @@ class Demo extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.Game.words)
     this.nameInput.focus();
   }
 
@@ -55,42 +56,45 @@ class Demo extends React.Component {
 
   // n.b. pushed items need to declare FINAL style state
   onInputChange(e) {
+    if (!e.currentTarget.value) return;
+
     const items = this.state.items;
 
-    if (e.keyCode === 8) {
-      items.pop();
+    items.push({
+      data: e.currentTarget.value,
+      key: `${e.currentTarget.value}-${items.length - 1}`,
+      opacity: spring(1, springOptions()),
+      top: spring(0, springOptions()),
+    });
 
-    } else if (e.keyCode === 13) {
-        let testString = this.state.items.map(i => i.data).join('');
+    this.setState({ items });
+
+    e.currentTarget.value = "";
+
+
+    let testString = items.map(i => i.data).join('');
+    let currentWord = this.Game.getCurrentWord(); // TODO - move this into state
+
+    if (e.keyCode === 8) {
+      // items.pop();
+
+    } else if (testString.length === currentWord.length) {
 
         // validate typed word
         let validation = this.Game.validateTypedWord(testString)
 
         if (validation) {
           this.Game.handleCorrectWord();
-          items.splice(0, items.length) // remove working set of player input
+        } else {
+          this.Game.handleIncorrectWord();
         }
 
-        // // check game state
-        // let currentGameState = this.state.currentGameState
-        // if (currentGameState === this.gameStates.END) {
-        //   this.state.currentGameState = this.gameStates.END;
-        // }
+        items.splice(0, items.length) // remove working set of player input
 
-    } else {
-      if (!e.currentTarget.value) return;
-
-      items.push({
-        data: e.currentTarget.value,
-        key: `${e.currentTarget.value}-${items.length - 1}`,
-        opacity: spring(1, springOptions()),
-        top: spring(0, springOptions()),
-      });
-
-      e.currentTarget.value = "";
+        this.setState({ items });
     }
 
-    this.setState({ items });
+
   }
 
   getKey(config, i) {
@@ -103,7 +107,9 @@ class Demo extends React.Component {
     return (
       <div>
         <div className="word-target">
-          <span>word: {Game.getCurrentWord()}</span>
+          <span>word: <h1>{Game.getCurrentWord()}</h1></span>
+        </div>
+        <div className="player-status">
           <span> score: {Game.getScore()}</span>
           <span> progress: {Game.getCurrentGameState()}</span>
         </div>
