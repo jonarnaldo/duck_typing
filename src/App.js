@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {TransitionMotion, spring} from 'react-motion';
+import { DuckTypingGame } from './game.js';
 
 const defaultStyle = {
   opacity: 1,
@@ -16,8 +17,12 @@ const springOptions = () => {
 class Demo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { items: [] };
-
+    this.Game = new DuckTypingGame();
+    this.gameStates = this.Game.getGameStates;
+    this.state = {
+      items: [],
+      currentGameState: this.Game.currentGameState,
+    };
     this.onInputChange = this.onInputChange.bind(this);
     this.getKey = this.getKey.bind(this);
   }
@@ -27,20 +32,6 @@ class Demo extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      items: [
-        { ...defaultStyle, data: 'd', key: 'd0' },
-        { ...defaultStyle, data: 'u', key: 'u1' },
-        { ...defaultStyle, data: 'c', key: 'c2' },
-        { ...defaultStyle, data: 'k', key: 'k3' },
-        { ...defaultStyle, data: 't', key: 't4' },
-        { ...defaultStyle, data: 'y', key: 'y5' },
-        { ...defaultStyle, data: 'p', key: 'p6' },
-        { ...defaultStyle, data: 'e', key: 'e7' },
-        { ...defaultStyle, data: ' ', key: ' 7' },
-      ]
-    })
-
     this.nameInput.focus();
   }
 
@@ -69,6 +60,23 @@ class Demo extends React.Component {
     if (e.keyCode === 8) {
       items.pop();
 
+    } else if (e.keyCode === 13) {
+        let testString = this.state.items.map(i => i.data).join('');
+
+        // validate typed word
+        let validation = this.Game.validateTypedWord(testString)
+
+        if (validation) {
+          this.Game.handleCorrectWord();
+          items.splice(0, items.length) // remove working set of player input
+        }
+
+        // // check game state
+        // let currentGameState = this.state.currentGameState
+        // if (currentGameState === this.gameStates.END) {
+        //   this.state.currentGameState = this.gameStates.END;
+        // }
+
     } else {
       if (!e.currentTarget.value) return;
 
@@ -76,7 +84,6 @@ class Demo extends React.Component {
         data: e.currentTarget.value,
         key: `${e.currentTarget.value}-${items.length - 1}`,
         opacity: spring(1, springOptions()),
-        // rotation: spring(0, springOptions()),
         top: spring(0, springOptions()),
       });
 
@@ -91,8 +98,15 @@ class Demo extends React.Component {
   }
 
   render() {
+    let Game = this.Game;
+
     return (
       <div>
+        <div className="word-target">
+          <span>word: {Game.getCurrentWord()}</span>
+          <span> score: {Game.getScore()}</span>
+          <span> progress: {Game.getCurrentGameState()}</span>
+        </div>
         <TransitionMotion
           willLeave={this.willLeave}
           willEnter={this.willEnter}
