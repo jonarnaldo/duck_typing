@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import {TransitionMotion, spring} from 'react-motion';
+import { DuckTypingGame } from './game.js';
 
 class DuckType extends React.Component {
   constructor(props) {
     super(props);
     this.Game = this.props.game;
-    this.gameStates = this.Game.getGameStates;
-    // this.onInputChange = this.onInputChange.bind(this);
-    // this.getKey = this.getKey.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
+    this.getKey = this.getKey.bind(this);
     this.state = {
       items: [],
       currentGameState: this.Game.currentGameState,
@@ -71,12 +71,19 @@ class DuckType extends React.Component {
 
       if (validation) {
         this.Game.handleCorrectWord();
+
       } else {
         this.Game.handleIncorrectWord();
       }
 
       items.splice(0, items.length) // remove working set of player input
       this.setState({ items });
+
+      let gameState = this.Game.getCurrentGameState();
+
+      if (this.Game.getCurrentGameState() === DuckTypingGame.gameStates.END) {
+        this.props.updateScreen('END')
+      }
     }
   }
 

@@ -2,19 +2,20 @@ import { Messages } from './messages.js';
 var randomWords = require('random-words');
 
 class DuckTypingGame {
+  static gameStates = {
+    INTRO: 'INTRO',
+    START: 'START',
+    PLAYING: 'PLAYING',
+    END: 'END',
+  }
+
   constructor() {
     this.score = 0;
-    this.words = randomWords(20);
-    this.gameStates = {
-      INTRO: 'INTRO',
-      START: 'START',
-      PLAYING: 'PLAYING',
-      END: 'END',
-    }
+    this.words = randomWords(5);
     this.wordStreak = 0;
     this.Messages = new Messages();
 
-    this.currentGameState = this.gameStates.INTRO;
+    this.currentGameState = DuckTypingGame.gameStates.INTRO;
   }
 
   getNextMessage() {
@@ -22,11 +23,11 @@ class DuckTypingGame {
   }
 
   getGameStates() {
-    return this.gameStates;
+    return DuckTypingGame.gameStates;
   }
 
   setGameState(state) {
-    if (this.gameStates[state]) {
+    if (DuckTypingGame.gameStates[state]) {
       this.currentGameState = state
     };
   }
@@ -56,6 +57,8 @@ class DuckTypingGame {
     this.score++;
     this.wordStreak++;
 
+    const { PLAYING, END } = DuckTypingGame.gameStates;
+
     if (this.wordStreak % 5 === 0) {
       this.score += 10;
       this.Messages.addNewMessage("Word Streak Bonus!", this.Messages.messageTypes.SCORE);
@@ -67,26 +70,28 @@ class DuckTypingGame {
       this.getCurrentWord();
 
       // set game state to PLAYING if not already
-      if (this.currentGameState !== this.gameStates.PLAYING) {
-        this.currentGameState = this.gameStates.PLAYING;
+      if (this.currentGameState !== PLAYING) {
+        this.setGameState(PLAYING)
       }
     } else {
       // set game state to END if there are no more words
-      this.currentGameState = this.gameStates.END;
+      this.setGameState(END)
     }
   }
 
   handleIncorrectWord() {
     this.removeWord();
 
+    const { PLAYING, END } = DuckTypingGame.gameStates;
+
     if (this.words.length) {
       this.getCurrentWord();
 
-      if (this.currentGameState !== this.gameStates.PLAYING) {
-        this.currentGameState = this.gameStates.PLAYING;
+      if (this.currentGameState !== PLAYING) {
+        this.setGameState(PLAYING)
       }
     } else {
-      this.currentGameState = this.gameStates.END;
+      this.setGameState(END)
     }
   }
 

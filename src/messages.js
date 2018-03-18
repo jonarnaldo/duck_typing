@@ -7,7 +7,6 @@ class Messages {
   }
 
   getNextMessage() {
-    console.log(this.messages)
     if (!this.messages.length) {
       return;
     }

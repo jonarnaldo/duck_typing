@@ -3,54 +3,73 @@ import { DuckTypingGame } from './game.js';
 import { DuckType } from './game_interface.js';
 import './App.css';
 
+
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      Game: new DuckTypingGame(),
-      // gameState: undefined
+      Game: undefined,
+      screen: DuckTypingGame.gameStates.INTRO,
     }
   }
 
-  // componentDidMount() {
-  //   this.state.gameState = this.state.Game.getGameState();
-  // }
-
-  handleStart = (e) => {
-    let game = this.state.Game;
-    game.setGameState(game.gameStates.START)
+  createNewGame = () => {
+    let game = new DuckTypingGame();
+    game.setGameState(DuckTypingGame.gameStates.START)
     this.setState({ Game: game });
+    this.setState({ screen: DuckTypingGame.gameStates.START })
   }
 
+  updateScreen = (currentGameState) => {
+    console.log("updating screen");
+    this.setState({ screen: currentGameState });
+  }
 
-  getScreen() {
-    const game = this.state.Game;
-    const gameStates = game.getGameStates();
-    const currentGameState = game.currentGameState
-    const { INTRO, START, PLAYING, END} = gameStates;
+  getScreen(currentGameState) {
+    const { INTRO, START, PLAYING, END} = DuckTypingGame.gameStates;
+
+    if (!DuckTypingGame.gameStates[currentGameState]) {
+      console.log('game state unrecoginzed', currentGameState)
+      return;
+    }
 
     switch (currentGameState) {
       case INTRO:
         return (
-          <h1 onClick={this.handleStart}>start game</h1>
+          <h1 onClick={this.createNewGame}>start game</h1>
         )
 
-      case START:
-        return (
-          <DuckType
+      case START: {
+        // this.createNewGame()
+        let game = this.state.Game;
+
+        if (game) {
+          return (
+            <DuckType
             game={game}
-          />
-        )
+            updateScreen={this.updateScreen}
+            />
+          )
+        }
+      }
 
-      case END:
+      case END: {
+        let game = this.state.Game;
+
         return (
-          <div>Game Over</div>
+          <div>
+          <span>Game Over</span>
+          <h1>{game.getScore()}</h1>
+          <h1 onClick={this.createNewGame}>restart game?</h1>
+          </div>
         )
+      }
     }
   }
 
   render() {
-    let screen = this.getScreen();
+    let screen = this.getScreen(this.state.screen);
 
     return (
       <div className="App">
