@@ -2,15 +2,18 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  font-size: 40px; }
+  font-size: 40px;
+}
 
 .letters,
 .letter {
   position: relative;
   display: inline-block;
-  min-width: 10px; }
+  min-width: 10px;
+}
 
 input.letter-input {
   outline: none;
   border: none;
-  font-size: 40px; }
+  font-size: 40px;
+}

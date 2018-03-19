@@ -3,8 +3,6 @@ import { DuckTypingGame } from './game.js';
 import { DuckType } from './game_interface.js';
 import './App.css';
 
-
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -37,7 +35,17 @@ class App extends React.Component {
     switch (currentGameState) {
       case INTRO:
         return (
-          <h1 onClick={this.createNewGame}>start game</h1>
+          <div className="intro-screen">
+            <div className="logo">
+              <img src="/ducky_icon.png" />
+              <div className="speech-bubble">quack</div>
+            </div>
+            <div className="app-intro">
+              <div className="game-title">DUCK TYPING</div>
+              <span>test your typing skills?</span>
+            </div>
+            <div className="start-button" onClick={this.createNewGame}>start game</div>
+          </div>
         )
 
       case START: {
@@ -46,10 +54,18 @@ class App extends React.Component {
 
         if (game) {
           return (
-            <DuckType
-            game={game}
-            updateScreen={this.updateScreen}
-            />
+            <div className="game-screen">
+              <div className="game-screen-header row">
+                <img src="/ducky_icon.png" />
+                <div className="App-intro">
+                  DUCK TYPING
+                </div>
+              </div>
+              <DuckType
+                game={game}
+                updateScreen={this.updateScreen}
+              />
+            </div>
           )
         }
       }
@@ -58,10 +74,14 @@ class App extends React.Component {
         let game = this.state.Game;
 
         return (
-          <div>
-          <span>Game Over</span>
-          <h1>{game.getScore()}</h1>
-          <h1 onClick={this.createNewGame}>restart game?</h1>
+          <div className="outro-screen">
+            <img src="/ducky_icon.png" />
+            <div className="outro-title">DUCK TYPING</div>
+            <div className="outro-subtitle">
+              <span>Game Over</span>
+              <div className="final-score">final score: {game.getScore()}</div>
+            </div>
+            <div className="restart-game-button" onClick={this.createNewGame}>restart game?</div>
           </div>
         )
       }
@@ -73,9 +93,6 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <p className="App-intro">
-          Duck Typing
-        </p>
         {screen}
       </div>
     );

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {TransitionMotion, spring} from 'react-motion';
 import { DuckTypingGame } from './game.js';
+import './game_interface.css';
 
 class DuckType extends React.Component {
   constructor(props) {
@@ -15,7 +16,6 @@ class DuckType extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.Game.words)
     this.nameInput.focus();
   }
 
@@ -43,10 +43,10 @@ class DuckType extends React.Component {
 
   // n.b. pushed items need to declare FINAL style state
   onInputChange = (e) => {
-    // if (!e.currentTarget.value) return;
+    if (!e.currentTarget.value) return;
 
     const items = this.state.items;
-
+    console.log(e.currentTarget.value)
     items.push({
       data: e.currentTarget.value,
       key: `${e.currentTarget.value}-${items.length - 1}`,
@@ -56,16 +56,11 @@ class DuckType extends React.Component {
 
     this.setState({ items });
 
-    // clear input value
-    e.currentTarget.value = "";
 
     let testString = items.map(i => i.data).join('');
     let currentWord = this.Game.getCurrentWord(); // TODO - move this into state
 
-    if (e.keyCode === 8) {
-      // items.pop();
-
-    } else if (testString.length >= currentWord.length) {
+    if (testString.length >= currentWord.length) {
       // validate typed word
       let validation = this.Game.validateTypedWord(testString)
 
@@ -85,6 +80,9 @@ class DuckType extends React.Component {
         this.props.updateScreen('END')
       }
     }
+
+    // clear input value
+    e.currentTarget.value = "";
   }
 
   getKey = (config, i) => {
@@ -96,53 +94,61 @@ class DuckType extends React.Component {
     let message = Game.getNextMessage() || null;
 
     return (
-      <div className="game">
-        <div className="word-target">
-          <span>word: <h1>{Game.getCurrentWord()}</h1></span>
-        </div>
+      <div className="game row">
         <div className="player-status">
-          <span>
-            <div className="player-score">score: {Game.getScore()}</div>
-            <div className="player-messages">{message ? message.message : ''}</div>
-          </span>
-          <span> progress: {Game.getCurrentGameState()}</span>
-        </div>
-        <TransitionMotion
-          willLeave={this.willLeave}
-          willEnter={this.willEnter}
-          styles={this.state.items.map(item => ({
-            key: item.key,
-            data: item.data,
-            style: {
-              opacity: item.opacity,
-              top: item.top,
-              // rotation: item.rotation
-            },
-        }))}>
-        {interpolatedStyles =>
-          <div className="letters">
-          {interpolatedStyles.map((config, i) => {
-            return (
-              <div
-                className="letter"
-                key={config.key}
-                style={{
-                  opacity: config.style.opacity,
-                  top: config.style.top,
-                  // transform: `rotate3d(1,0,0,${config.style.rotation}deg)`,
-                }} >
-                {config.data}
-              </div>
-            )
-          })}
+          <div className="player-score">
+            score: {Game.getScore()}
           </div>
-        }
-        </TransitionMotion>
-        <input
-          className="letter-input"
-          onKeyUp={this.onInputChange}
-          ref={(input) => { this.nameInput = input; }}
-        />
+          <div className="player-messages">
+            {message ? message.message : ''}
+          </div>
+          <div className="player-progress">
+            progress: {Game.getCurrentGameState()}
+          </div>
+        </div>
+        <div className="word-target">
+          <span>
+            word: {Game.getCurrentWord()}
+          </span>
+        </div>
+        <div className="user-input">
+          <TransitionMotion
+            willLeave={this.willLeave}
+            willEnter={this.willEnter}
+            styles={this.state.items.map(item => ({
+              key: item.key,
+              data: item.data,
+              style: {
+                opacity: item.opacity,
+                top: item.top,
+                // rotation: item.rotation
+              },
+          }))}>
+          {interpolatedStyles =>
+            <div className="letters">
+            {interpolatedStyles.map((config, i) => {
+              return (
+                <div
+                  className="letter"
+                  key={config.key}
+                  style={{
+                    opacity: config.style.opacity,
+                    top: config.style.top,
+                    // transform: `rotate3d(1,0,0,${config.style.rotation}deg)`,
+                  }} >
+                  {config.data}
+                </div>
+              )
+            })}
+            </div>
+          }
+          </TransitionMotion>
+          <input
+            className="letter-input"
+            onKeyUp={this.onInputChange}
+            ref={(input) => { this.nameInput = input; }}
+          />
+        </div>
       </div>
     )
   }

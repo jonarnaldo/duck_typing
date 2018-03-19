@@ -11,7 +11,7 @@ class DuckTypingGame {
 
   constructor() {
     this.score = 0;
-    this.words = randomWords(5);
+    this.words = randomWords(10);
     this.wordStreak = 0;
     this.Messages = new Messages();
 

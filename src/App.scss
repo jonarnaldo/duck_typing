@@ -1,0 +1,131 @@
+@mixin play-button() {
+  cursor: pointer;
+  border: 3px solid #f5bc12;
+  color: #f5bc12;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  height: 50px;
+  font-size: 40px;
+
+  &:hover {
+    background-color: #f5bc12;
+    color: white;
+  }
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.app-intro {
+  text-align: center;
+  font-size: 20px;
+  padding-bottom: 20px;
+
+  .game-title {
+    cursor: pointer;
+    font-size: 40px;
+  }
+}
+
+.intro-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .start-button {
+    @include play-button();
+  }
+
+  .logo {
+    position: relative;
+
+    .speech-bubble {
+      position: absolute;
+      left: 315px;
+      top: 150px;
+      height: 60px;
+      background: #f5bc12;
+      border-radius: 10px;
+      color: white;
+      padding: 10px;
+    }
+
+    .speech-bubble:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 0;
+      height: 0;
+      border: 28px solid transparent;
+      border-right-color: #f5bc12;
+      border-left: 0;
+      border-top: 0;
+      margin-top: -14px;
+      margin-left: -28px;
+    }
+  }
+
+}
+
+.game-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .row {
+    width: 100%;
+  }
+
+  .game-screen-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    img {
+      width: 10%;
+      height: 10%;
+    }
+
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.outro-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 20px;
+
+  .outro-title {
+    font-size: 40px;
+  }
+
+  .outro-subtitle {
+    padding-bottom: 20px;
+  }
+
+  .final-score {
+
+  }
+
+  .restart-game-button {
+    @include play-button();
+  }
+}
