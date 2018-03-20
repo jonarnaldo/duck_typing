@@ -2,7 +2,7 @@
 
 A typing game made with React Motion
 
-![Duck Type Demo](http://g.recordit.co/U6X6NIyxot.gif)
+<a href="https://imgflip.com/gif/26qsz6"><img src="https://i.imgflip.com/26qsz6.gif" title="made at imgflip.com"/></a>
 
 
 ## Getting Started
