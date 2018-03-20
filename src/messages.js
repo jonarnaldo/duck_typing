@@ -4,6 +4,7 @@ class Messages {
     this.messageTypes = {
       SCORE: 'SCORE',
     }
+    this.messageIndex = 0
   }
 
   getNextMessage() {
@@ -11,9 +12,9 @@ class Messages {
       return;
     }
 
-    let message = this.messages[0];
-    this.removeMessage();
-
+    let message = this.messages[this.messageIndex];
+    // this.removeMessage();
+    this.messageIndex = ++this.messageIndex;
     return message;
   }
 
@@ -26,7 +27,7 @@ class Messages {
       console.log("message type does not exist!");
       return;
     }
-    return { message, type }
+    return { message, type, created: new Date() }
   }
 
   addNewMessage(message, type) {

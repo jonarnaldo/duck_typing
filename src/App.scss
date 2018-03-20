@@ -46,6 +46,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 150px;
 
   .start-button {
     @include play-button();

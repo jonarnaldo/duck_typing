@@ -11,15 +11,18 @@ class DuckTypingGame {
 
   constructor() {
     this.score = 0;
-    this.words = randomWords(10);
+    this.words = randomWords(12);
     this.wordStreak = 0;
     this.Messages = new Messages();
-
     this.currentGameState = DuckTypingGame.gameStates.INTRO;
   }
 
   getNextMessage() {
     return this.Messages.getNextMessage();
+  }
+
+  getAllMessages() {
+    return this.Messages.messages;
   }
 
   getGameStates() {
@@ -52,16 +55,17 @@ class DuckTypingGame {
     return (this.getCurrentWord() === word);
   }
 
-  handleCorrectWord() {
+  handleCorrectWord(cb) {
     this.removeWord();
     this.score++;
     this.wordStreak++;
 
     const { PLAYING, END } = DuckTypingGame.gameStates;
 
-    if (this.wordStreak % 5 === 0) {
+    if (this.wordStreak % 3 === 0) {
       this.score += 10;
       this.Messages.addNewMessage("Word Streak Bonus!", this.Messages.messageTypes.SCORE);
+      cb();
     }
 
     // determine game state

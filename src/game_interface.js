@@ -3,20 +3,55 @@ import {TransitionMotion, spring} from 'react-motion';
 import { DuckTypingGame } from './game.js';
 import './game_interface.css';
 
-class DuckType extends React.Component {
+class DuckTypeInterface extends React.Component {
   constructor(props) {
     super(props);
-    this.Game = this.props.game;
+    this.Game = new DuckTypingGame();
     this.onInputChange = this.onInputChange.bind(this);
     this.getKey = this.getKey.bind(this);
     this.state = {
       items: [],
       currentGameState: this.Game.currentGameState,
+      currentMessage: [], // this holds the last message
+      time: 20000,
     };
   }
 
   componentDidMount() {
     this.nameInput.focus();
+
+    // window.setTimeout(() => {
+    //   this.props.updateSummary({
+    //     score: this.Game.getScore(),
+    //     messages: this.Game.getAllMessages(),
+    //   })
+    //   this.props.updateScreen('END')
+    // }, this.state.time)
+  }
+
+  updateMessages = () => {
+    let currentMessage = this.state.currentMessage;
+    let nextMessage = this.Game.getNextMessage();
+
+    if (!nextMessage) {
+      return;
+    }
+
+    // replace current message with new message if different timestamp
+    if (!currentMessage || currentMessage.created !== nextMessage.created) {
+      this.setState({
+        currentMessage: [{
+          data: nextMessage.message,
+          key: "some-key",
+          opacity: spring(1, this.springOptions()),
+          top: spring(0, this.springOptions()),
+        }]
+      });
+
+      window.setTimeout(() => {
+        this.setState({ currentMessage: [] });
+      }, 2000)
+    }
   }
 
   // n.b. return FINAL state here
@@ -24,7 +59,7 @@ class DuckType extends React.Component {
     return {
       opacity: 0,
       // rotation: spring(180, springOptions()),
-      top: 50,
+      top: 70,
     };
   }
 
@@ -33,7 +68,7 @@ class DuckType extends React.Component {
     return {
       opacity: 0,
       // rotation: 180,
-      top: 50,
+      top: 70,
     };
   }
 
@@ -59,12 +94,14 @@ class DuckType extends React.Component {
     let testString = items.map(i => i.data).join('');
     let currentWord = this.Game.getCurrentWord(); // TODO - move this into state
 
-    if (testString.length >= currentWord.length) {
+    if (currentWord && testString.length >= currentWord.length) {
       // validate typed word
       let validation = this.Game.validateTypedWord(testString)
 
       if (validation) {
-        this.Game.handleCorrectWord();
+        this.Game.handleCorrectWord(() => {
+          this.updateMessages();
+        });
 
       } else {
         this.Game.handleIncorrectWord();
@@ -78,6 +115,10 @@ class DuckType extends React.Component {
 
         // determine game screen state
         if (this.Game.getCurrentGameState() === DuckTypingGame.gameStates.END) {
+          this.props.updateSummary({
+            score: this.Game.getScore(),
+            messages: this.Game.getAllMessages(),
+          })
           this.props.updateScreen('END')
         }
       }
@@ -96,16 +137,41 @@ class DuckType extends React.Component {
 
   render() {
     let Game = this.Game;
-    let message = Game.getNextMessage() || null;
 
     return (
       <div className="game row">
+        <TransitionMotion
+          willLeave={this.willLeave}
+          willEnter={this.willEnter}
+          styles={this.state.currentMessage.map(item => ({
+            key: item.key,
+            data: item.data,
+            style: {
+              opacity: item.opacity,
+              top: item.top,
+            },
+          }))}>
+          {interpolatedStyles =>
+            <div className="player-messages">
+            {interpolatedStyles.map((config, i) => {
+              return (
+                <div
+                  className="message"
+                  key={config.key}
+                  style={{
+                    opacity: config.style.opacity,
+                    top: config.style.top,
+                  }} >
+                  {config.data}
+                </div>
+              )
+            })}
+            </div>
+          }
+        </TransitionMotion>
         <div className="player-status">
           <div className="player-score">
             score: {Game.getScore()}
-          </div>
-          <div className="player-messages">
-            {message ? message.message : ''}
           </div>
           <div className="player-progress">
             progress: {Game.getCurrentGameState()}
@@ -128,25 +194,25 @@ class DuckType extends React.Component {
                 top: item.top,
                 // rotation: item.rotation
               },
-          }))}>
-          {interpolatedStyles =>
-            <div className="letters">
-            {interpolatedStyles.map((config, i) => {
-              return (
-                <div
-                  className="letter"
-                  key={config.key}
-                  style={{
-                    opacity: config.style.opacity,
-                    top: config.style.top,
-                    // transform: `rotate3d(1,0,0,${config.style.rotation}deg)`,
-                  }} >
-                  {config.data}
-                </div>
-              )
-            })}
-            </div>
-          }
+            }))}>
+            {interpolatedStyles =>
+              <div className="letters">
+              {interpolatedStyles.map((config, i) => {
+                return (
+                  <div
+                    className="letter"
+                    key={config.key}
+                    style={{
+                      opacity: config.style.opacity,
+                      top: config.style.top,
+                      // transform: `rotate3d(1,0,0,${config.style.rotation}deg)`,
+                    }} >
+                    {config.data}
+                  </div>
+                )
+              })}
+              </div>
+            }
           </TransitionMotion>
           <input
             className="letter-input"
@@ -159,4 +225,4 @@ class DuckType extends React.Component {
   }
 }
 
-export { DuckType }
+export { DuckTypeInterface }

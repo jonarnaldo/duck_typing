@@ -1,27 +1,35 @@
 import React, { Component } from 'react';
 import { DuckTypingGame } from './game.js';
-import { DuckType } from './game_interface.js';
+import { DuckTypeInterface } from './game_interface.js';
 import './App.css';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      Game: undefined,
+      gameState: null,
       screen: DuckTypingGame.gameStates.INTRO,
+      summary: null,
     }
   }
 
   createNewGame = () => {
-    let game = new DuckTypingGame();
-    game.setGameState(DuckTypingGame.gameStates.START)
-    this.setState({ Game: game });
-    this.setState({ screen: DuckTypingGame.gameStates.START })
+    const start = DuckTypingGame.gameStates.START;
+    this.setState({ gameState: start });
+    this.setState({ screen: start })
   }
 
   updateScreen = (currentGameState) => {
     console.log("updating screen");
     this.setState({ screen: currentGameState });
+  }
+
+  updateSummary = (summary) => {
+    this.setState({ summary: summary })
+  }
+
+  getSummary = () => {
+    return this.state.summary && this.state.summary.messages && this.state.summary.messages.length || 0;
   }
 
   getScreen(currentGameState) {
@@ -49,37 +57,35 @@ class App extends React.Component {
         )
 
       case START: {
-        // this.createNewGame()
-        let game = this.state.Game;
-
-        if (game) {
-          return (
-            <div className="game-screen">
-              <div className="game-screen-header row">
-                <img src="/ducky_icon.png" />
-                <div className="App-intro">
-                  DUCK TYPING
-                </div>
+        return (
+          <div className="game-screen">
+            <div className="game-screen-header row">
+              <img src="/ducky_icon.png" />
+              <div className="App-intro">
+                DUCK TYPING
               </div>
-              <DuckType
-                game={game}
-                updateScreen={this.updateScreen}
-              />
             </div>
-          )
-        }
+            <DuckTypeInterface
+              updateScreen={this.updateScreen}
+              updateSummary={this.updateSummary}
+              gameState={this.gameState}
+            />
+          </div>
+        )
       }
 
       case END: {
-        let game = this.state.Game;
-
         return (
           <div className="outro-screen">
             <img src="/ducky_icon.png" />
             <div className="outro-title">DUCK TYPING</div>
             <div className="outro-subtitle">
               <span>Game Over</span>
-              <div className="final-score">final score: {game.getScore()}</div>
+              <div className="final-stats">
+                <span>stats:</span>
+                <div className="final-summary">word streaks: {this.getSummary()}</div>
+                <div className="final-score">final score: {this.state.summary.score}</div>
+              </div>
             </div>
             <div className="restart-game-button" onClick={this.createNewGame}>restart game?</div>
           </div>

@@ -23,7 +23,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center; }
+  align-items: center;
+  padding-top: 150px; }
   .intro-screen .start-button {
     cursor: pointer;
     border: 3px solid #f5bc12;
