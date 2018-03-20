@@ -11,7 +11,7 @@ class DuckTypingGame {
 
   constructor() {
     this.score = 0;
-    this.words = randomWords(12);
+    this.words = randomWords(6);
     this.wordStreak = 0;
     this.Messages = new Messages();
     this.currentGameState = DuckTypingGame.gameStates.INTRO;
@@ -59,6 +59,8 @@ class DuckTypingGame {
     this.removeWord();
     this.score++;
     this.wordStreak++;
+
+    // todo - add consecutive word streak
 
     const { PLAYING, END } = DuckTypingGame.gameStates;
 

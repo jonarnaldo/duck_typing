@@ -58,8 +58,7 @@ class DuckTypeInterface extends React.Component {
   willLeave = (d) => {
     return {
       opacity: 0,
-      // rotation: spring(180, springOptions()),
-      top: 70,
+      top: 100,
     };
   }
 
@@ -67,8 +66,7 @@ class DuckTypeInterface extends React.Component {
   willEnter = (d) =>{
     return {
       opacity: 0,
-      // rotation: 180,
-      top: 70,
+      top: 100,
     };
   }
 
