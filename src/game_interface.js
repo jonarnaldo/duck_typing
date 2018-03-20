@@ -46,7 +46,7 @@ class DuckType extends React.Component {
     if (!e.currentTarget.value) return;
 
     const items = this.state.items;
-    console.log(e.currentTarget.value)
+
     items.push({
       data: e.currentTarget.value,
       key: `${e.currentTarget.value}-${items.length - 1}`,
@@ -55,7 +55,6 @@ class DuckType extends React.Component {
     });
 
     this.setState({ items });
-
 
     let testString = items.map(i => i.data).join('');
     let currentWord = this.Game.getCurrentWord(); // TODO - move this into state
@@ -71,14 +70,20 @@ class DuckType extends React.Component {
         this.Game.handleIncorrectWord();
       }
 
-      items.splice(0, items.length) // remove working set of player input
-      this.setState({ items });
+      let resetItem = () => {
+        items.splice(0, items.length)
+        this.setState({ items });
 
-      let gameState = this.Game.getCurrentGameState();
+        let gameState = this.Game.getCurrentGameState();
 
-      if (this.Game.getCurrentGameState() === DuckTypingGame.gameStates.END) {
-        this.props.updateScreen('END')
+        // determine game screen state
+        if (this.Game.getCurrentGameState() === DuckTypingGame.gameStates.END) {
+          this.props.updateScreen('END')
+        }
       }
+
+      // reset items and check game state
+      window.setTimeout(resetItem.bind(this), 200)
     }
 
     // clear input value
