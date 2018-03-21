@@ -3,7 +3,14 @@ import { DuckTypingGame } from './game.js';
 import { DuckTypeInterface } from './game_interface.js';
 import './App.css';
 
-class App extends React.Component {
+/*
+  things to add:
+   - add summary statistics
+   - increase word count
+   - prettify end screen
+*/
+
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +36,7 @@ class App extends React.Component {
   }
 
   getSummary = () => {
-    return this.state.summary && this.state.summary.messages && this.state.summary.messages.length || 0;
+    return (this.state.summary && this.state.summary.messages && this.state.summary.messages.length) || 0;
   }
 
   getScreen(currentGameState) {
@@ -45,7 +52,7 @@ class App extends React.Component {
         return (
           <div className="intro-screen">
             <div className="logo">
-              <img src="/ducky_icon.png" />
+              <img src="/ducky_icon.png" alt="ducky_icon"/>
               <div className="speech-bubble">quack</div>
             </div>
             <div className="app-intro">
@@ -60,7 +67,7 @@ class App extends React.Component {
         return (
           <div className="game-screen">
             <div className="game-screen-header row">
-              <img src="/ducky_icon.png" />
+              <img src="/ducky_icon.png" alt="ducky_icon"/>
               <div className="App-intro">
                 DUCK TYPING
               </div>
@@ -77,7 +84,7 @@ class App extends React.Component {
       case END: {
         return (
           <div className="outro-screen">
-            <img src="/ducky_icon.png" />
+            <img src="/ducky_icon.png" alt="ducky_icon"/>
             <div className="outro-title">DUCK TYPING</div>
             <div className="outro-subtitle">
               <span>Game Over</span>
@@ -90,6 +97,10 @@ class App extends React.Component {
             <div className="restart-game-button" onClick={this.createNewGame}>restart game?</div>
           </div>
         )
+      }
+
+      default: {
+        return;
       }
     }
   }

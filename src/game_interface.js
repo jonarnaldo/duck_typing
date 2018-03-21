@@ -3,7 +3,7 @@ import {TransitionMotion, spring} from 'react-motion';
 import { DuckTypingGame } from './game.js';
 import './game_interface.css';
 
-class DuckTypeInterface extends React.Component {
+class DuckTypeInterface extends Component {
   constructor(props) {
     super(props);
     this.Game = new DuckTypingGame();
@@ -108,8 +108,6 @@ class DuckTypeInterface extends React.Component {
       let resetItem = () => {
         items.splice(0, items.length)
         this.setState({ items });
-
-        let gameState = this.Game.getCurrentGameState();
 
         // determine game screen state
         if (this.Game.getCurrentGameState() === DuckTypingGame.gameStates.END) {
