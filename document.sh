@@ -16,29 +16,27 @@ git clone https://github.com/jonarnaldo/duck_typing.git
 echo $pwd
 
 # set variables if they don't exist
-${DOCUMENTATION:=$PWD/documentation}
-${COMPONENTS:=$PWD/src/*}
 SHA=`git rev-parse --verify HEAD`
 
 # overwrite readme file with updated info
-echo "# Documentation"$'\r'$'\r' > $DOCUMENTATION/document.md
-echo "## Component Table of Contents" >> $DOCUMENTATION/document.md
+echo "# Documentation"$'\r'$'\r' > ./documentation/document.md
+echo "## Component Table of Contents" >> ./documentation/document.md
 
 # writes jsdoc console output to markdown file
 write_markdown_file () {
   local fileName
   fileName=$(basename $1)
   DesName=$(sed s/js/md/g <<< ${fileName})
-  jsdoc2md $1 > $DOCUMENTATION${DesName}
-  echo "writing file ${DesName} to ${DOCUMENTATION}"
+  jsdoc2md $1 > ./documentation${DesName}
+  echo "writing file ${DesName} to ./documentation/"
 
   # create appropriate link in readme
-  echo "* [${fileName}](${DesName})" >> $DOCUMENTATION/document.md
+  echo "* [${fileName}](${DesName})" >> ./documentation/document.md
 }
 
 export -f write_markdown_file
 
-find $COMPONENTS -type f -name '*.jsx' ! -name '*.test.jsx' -exec bash -c 'write_markdown_file "$1"' - {} \;
+find ./src/* -type f -name '*.jsx' ! -name '*.test.jsx' -exec bash -c 'write_markdown_file "$1"' - {} \;
 
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
