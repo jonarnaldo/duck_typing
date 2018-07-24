@@ -11,11 +11,11 @@
 # [ ] todo - write script to create documentation from js files from both Unity and Core
 echo 'updating documentation'
 
-git clone upstream https://github.com/jonarnaldo/duck_typing.git
+git clone https://github.com/jonarnaldo/duck_typing.git
 
 cd duck_type
 
-echo pwd
+echo $pwd
 
 # # set variables if they don't exist
 # ${DOCUMENTATION:=$HOME/workspace/meteor/packages/Documentation/}

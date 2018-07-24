@@ -3,6 +3,12 @@ import {TransitionMotion, spring} from 'react-motion';
 import { DuckTypingGame } from './game.js';
 import './game_interface.css';
 
+/**
+* @class
+* @name DuckTypeInterface
+* @summary creates the UI game layer for duck typing
+*/
+
 class DuckTypeInterface extends Component {
   constructor(props) {
     super(props);
