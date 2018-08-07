@@ -11,6 +11,7 @@
 # [ ] todo - write script to create documentation from js files from both Unity and Core
 echo 'updating documentation'
 
+# /home/travis/build/[username]/[repo_name]
 echo $PWD
 echo $HOME
 
