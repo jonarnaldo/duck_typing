@@ -36,7 +36,7 @@ write_markdown_file () {
 #   echo "* [${fileName}](${DesName})" >> ./documentation/document.md
 }
 
-export -f write_markdown_file
+export write_markdown_file
 
 find ./src/* -type f -name '*.jsx' ! -name '*.test.jsx' -exec bash -c 'write_markdown_file "$1"' - {} \;
 
