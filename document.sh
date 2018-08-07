@@ -11,9 +11,12 @@
 # [ ] todo - write script to create documentation from js files from both Unity and Core
 echo 'updating documentation'
 
-# git clone https://github.com/jonarnaldo/duck_typing.git
-
 echo $PWD
+echo $HOME
+
+cd ..
+
+# git clone https://github.com/jonarnaldo/duck_test.git
 
 # # set variables if they don't exist
 # SHA=`git rev-parse --verify HEAD`
