@@ -34,9 +34,9 @@ write_markdown_file () {
 #   echo "* [${fileName}](${DesName})" >> ./documentation/document.md
 }
 
-export write_markdown_file
+# export write_markdown_file
 
-find ./src/* -type f -name '*.jsx' ! -name '*.test.jsx' -exec bash -c 'write_markdown_file "$1"' - {} \;
+# find ./src/* -type f -name '*.jsx' ! -name '*.test.jsx' -exec bash -c 'write_markdown_file "$1"' - {} \;
 
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
