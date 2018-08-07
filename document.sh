@@ -26,6 +26,8 @@ echo "## Component Table of Contents" >> ./documentation/document.md
 write_markdown_file () {
   local fileName
   fileName=$(basename $1)
+  echo 'filename: $fileName;
+  echo sed
   DesName=$(sed s/js/md/g <<< ${fileName})
   jsdoc2md $1 > ./documentation${DesName}
   echo "writing file ${DesName} to ./documentation/"
