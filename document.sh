@@ -17,7 +17,7 @@ echo 'current directory' $PWD
 
 cd ..
 
-git clone https://github.com/jonarnaldo/duck_test.git
+git clone https://github.com/jonarnaldo/duck_typing.git
 
 echo 'current directory' $PWD
 
