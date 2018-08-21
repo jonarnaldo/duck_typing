@@ -17,37 +17,38 @@ echo $HOME
 
 cd ..
 
-# git clone https://github.com/jonarnaldo/duck_test.git
+git clone https://github.com/jonarnaldo/duck_test.git
 
-# # set variables if they don't exist
-# SHA=`git rev-parse --verify HEAD`
+# set variables if they don't exist
+SHA=`git rev-parse --verify HEAD`
 
-# # overwrite readme file with updated info
-# echo "# Documentation"$'\r'$'\r' > ./documentation/document.md
-# echo "## Component Table of Contents" >> ./documentation/document.md
+# overwrite readme file with updated info
+echo "# Documentation"$'\r'$'\r' > ./documentation/document.md
+echo "## Component Table of Contents" >> ./documentation/document.md
 
-# # writes jsdoc console output to markdown file
-# write_markdown_file () {
-#   local fileName
-#   fileName=$(basename $1)
-# #   DesName=$(sed s/js/md/g <<< ${fileName})
-# #   jsdoc2md $1 > ./documentation${DesName}
-# #   echo "writing file ${DesName} to ./documentation/"
+# writes jsdoc console output to markdown file
+write_markdown_file () {
+  local fileName
+  fileName=$(basename $1)
+  DesName=$(sed s/js/md/g <<< ${fileName})
 
-#   # create appropriate link in readme
-# #   echo "* [${fileName}](${DesName})" >> ./documentation/document.md
-# }
+  # echo "writing file ${DesName} to ./documentation/"
+  # jsdoc2md $1 > ./documentation${DesName}
+  # 
+  # # create appropriate link in readme
+  # echo "* [${fileName}](${DesName})" >> ./documentation/document.md
+}
 
-# # export write_markdown_file
+# export write_markdown_file
 
-# # find ./src/* -type f -name '*.jsx' ! -name '*.test.jsx' -exec bash -c 'write_markdown_file "$1"' - {} \;
+# find ./src/* -type f -name '*.jsx' ! -name '*.test.jsx' -exec bash -c 'write_markdown_file "$1"' - {} \;
 
-# # Commit the "changes", i.e. the new version.
-# # The delta will show diffs between new and old versions.
-# git add .
-# git commit -m "Deploy to GitHub Pages: ${SHA}"
+# Commit the "changes", i.e. the new version.
+# The delta will show diffs between new and old versions.
+git add .
+git commit -m "Deploy to GitHub Pages: ${SHA}"
 
-# # Now that we're all set up, we can push.
-# git push origin master
+# Now that we're all set up, we can push.
+git push origin master
 
 exit
