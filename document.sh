@@ -16,6 +16,8 @@ echo 'current directory' $PWD
 # echo $HOME
 
 cd ..
+mkdir temp
+cd temp
 echo 'current directory' $PWD
 git clone https://github.com/jonarnaldo/duck_typing.git
 
