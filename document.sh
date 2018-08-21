@@ -20,6 +20,7 @@ mkdir temp
 cd temp
 echo 'current directory' $PWD
 git clone https://github.com/jonarnaldo/duck_typing.git
+cd duck_typing
 
 
 
@@ -36,16 +37,16 @@ write_markdown_file () {
   fileName=$(basename $1)
   DesName=$(sed s/js/md/g <<< ${fileName})
 
-  # echo "writing file ${DesName} to ./documentation/"
-  # jsdoc2md $1 > ./documentation${DesName}
-  # 
-  # # create appropriate link in readme
-  # echo "* [${fileName}](${DesName})" >> ./documentation/document.md
+  echo "writing file ${DesName} to ./documentation/"
+  jsdoc2md $1 > ./documentation${DesName}
+  
+  # create appropriate link in readme
+  echo "* [${fileName}](${DesName})" >> ./documentation/document.md
 }
 
-# export write_markdown_file
+export write_markdown_file
 
-# find ./src/* -type f -name '*.jsx' ! -name '*.test.jsx' -exec bash -c 'write_markdown_file "$1"' - {} \;
+find ./src/* -type f -name '*.jsx' ! -name '*.test.jsx' -exec bash -c 'write_markdown_file "$1"' - {} \;
 
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
