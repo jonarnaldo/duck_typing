@@ -51,10 +51,15 @@ write_markdown_file () {
 
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
+echo 'git add'
 git add .
+echo 'git commit'
 git commit -m "Deploy to GitHub Pages: ${SHA}"
+echo 'git log'
+git log
 
 # Now that we're all set up, we can push.
+echo 'git push'
 git push origin master
 
 exit
