@@ -12,14 +12,14 @@
 echo 'updating documentation'
 
 # /home/travis/build/[username]/[repo_name]
-echo 'current directory $PWD'
+echo 'current directory' $PWD
 # echo $HOME
 
 cd ..
 
 git clone https://github.com/jonarnaldo/duck_test.git
 
-echo 'current directory $PWD'
+echo 'current directory' $PWD
 
 # set variables if they don't exist
 SHA=`git rev-parse --verify HEAD`
