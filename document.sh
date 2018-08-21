@@ -26,6 +26,10 @@ cd duck_typing
 # set variables if they don't exist
 SHA=`git rev-parse --verify HEAD`
 
+# configure git vars
+git config --global user.email "travis@travis-ci.org"
+git config --global user.name "Travis CI"
+  
 # overwrite readme file with updated info
 echo "# Documentation"$'\r'$'\r' > ./documentation/document.md
 echo "## Component Table of Contents" >> ./documentation/document.md
