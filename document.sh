@@ -18,10 +18,10 @@ echo 'current directory' $PWD
 cd ..
 
 mkdir temp
-
+cd temp
 echo 'current directory' $PWD
 git clone https://github.com/jonarnaldo/duck_typing.git
-
+cd duck_typing
 
 # set variables if they don't exist
 SHA=`git rev-parse --verify HEAD`
@@ -34,7 +34,7 @@ echo "## Component Table of Contents" >> ./documentation/document.md
 write_markdown_file () {
   local fileName
   fileName=$(basename $1)
-  echo $fileName
+  echo 'filename: ' $fileName
   # # pass a string instead using bash operator <<<
   # DesName=$(sed s/js/md/g <<< ${fileName})
 
