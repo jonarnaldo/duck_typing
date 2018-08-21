@@ -16,10 +16,10 @@ echo 'current directory' $PWD
 # echo $HOME
 
 cd ..
-
+echo 'current directory' $PWD
 git clone https://github.com/jonarnaldo/duck_typing.git
 
-echo 'current directory' $PWD
+
 
 # set variables if they don't exist
 SHA=`git rev-parse --verify HEAD`
