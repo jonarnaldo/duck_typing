@@ -9,6 +9,7 @@
 # [ ] todo - how to handle errors if either location is not found
 # [x] todo - generate/update readme.md when script is rerun
 # [ ] todo - write script to create documentation from js files from both Unity and Core
+# see https://stackoverflow.com/questions/18027115/committing-via-travis-ci-failing to work through Travis authentication
 echo 'updating documentation'
 
 # /home/travis/build/[username]/[repo_name]
@@ -27,8 +28,8 @@ cd duck_typing
 SHA=`git rev-parse --verify HEAD`
 
 # configure git vars
-git config --global user.email "travis@travis-ci.org"
-git config --global user.name "Travis CI"
+# git config --global user.email "jonarnaldo@gmail.com"
+# git config --global user.name "Travis CI"
   
 # overwrite readme file with updated info
 echo "# Documentation"$'\r'$'\r' > ./documentation/document.md
@@ -59,8 +60,6 @@ echo 'git add'
 git add .
 echo 'git commit'
 git commit -m "Deploy to GitHub Pages: ${SHA}"
-echo 'git log'
-git log
 
 # Now that we're all set up, we can push.
 echo 'git push'
