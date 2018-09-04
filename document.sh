@@ -10,59 +10,67 @@
 # [x] todo - generate/update readme.md when script is rerun
 # [ ] todo - write script to create documentation from js files from both Unity and Core
 # see https://stackoverflow.com/questions/18027115/committing-via-travis-ci-failing to work through Travis authentication
-echo 'updating documentation'
-
-# /home/travis/build/[username]/[repo_name]
-echo 'current directory' $PWD
-# echo $HOME
-
-cd ..
-
-mkdir temp
-cd temp
-echo 'current directory' $PWD
-git clone https://github.com/jonarnaldo/duck_typing.git
-cd duck_typing
-
-# set variables if they don't exist
-SHA=`git rev-parse --verify HEAD`
-
-# configure git vars
-# git config --global user.email "jonarnaldo@gmail.com"
-# git config --global user.name "Travis CI"
-  
-# overwrite readme file with updated info
-echo "# Documentation"$'\r'$'\r' > ./documentation/document.md
-echo "## Component Table of Contents" >> ./documentation/document.md
-
 # writes jsdoc console output to markdown file
 write_markdown_file () {
   local fileName
   fileName=$(basename $1)
   echo 'filename: ' $fileName
-  # # pass a string instead using bash operator <<<
-  # DesName=$(sed s/js/md/g <<< ${fileName})
 
-  # echo "writing file ${DesName} to ./documentation/"
-  # jsdoc2md $1 > ./documentation${DesName}
-  # 
-  # # create appropriate link in readme
-  # echo "* [${fileName}](${DesName})" >> ./documentation/document.md
+  # replace 'js' extension to 'md' using sed
+  DesName=$(sed s/js/md/g <<< ${fileName})
+
+  echo "writing file ${DesName} to ./documentation/"
+  jsdoc2md $1 > ./documentation${DesName}
+
+  # create appropriate link in readme
+  echo "* [${fileName}](${DesName})" >> ../../documentation/document.md
 }
 
-# export write_markdown_file
+# export functions, set variables if they don't exist, clone repo, add jsdoc package
+init() {
+  echo 'initiliazing updating documentation'
+  export write_markdown_file
 
-# find ./src/* -type f -name '*.jsx' ! -name '*.test.jsx' -exec bash -c 'write_markdown_file "$1"' - {} \;
+  SHA=`git rev-parse --verify HEAD`
 
-# Commit the "changes", i.e. the new version.
-# The delta will show diffs between new and old versions.
-echo 'git add'
-git add .
-echo 'git commit'
-git commit -m "Deploy to GitHub Pages: ${SHA}"
+  npm install -g jsdoc-to-markdown
 
-# Now that we're all set up, we can push.
-echo 'git push'
-git push origin master
+  # clone repo into temp folder and cd into it
+  cd ..
+  mkdir temp
+  cd temp
+  echo 'current directory' $PWD
+  git clone https://github.com/jonarnaldo/duck_typing.git
+  cd duck_typing
+}
+
+# find all jsx files excluding test.jsx and write markdown file
+writeAllDocumentation() {
+  echo "# Documentation"$'\r'$'\r' > ../../documentation/document.md
+  echo "## Component Table of Contents" >> ../../documentation/document.md
+  find ./src/* -type f -name '*.jsx' ! -name '*.test.jsx' -exec bash -c 'write_markdown_file "$1"' - {} \;
+}
+
+setup_git() {
+  git config --global user.email "jonarnaldo@gmail.com"
+  git config --global user.name "jonarnaldo"
+}
+
+commit_documentation_files() {
+  git checkout -b documentation
+  git add .
+  git commit --message "Travis build: ${SHA}"
+}
+
+upload_files() {
+  git remote add upstream https://${GH_TOKEN}@github.com/jonarnaldo/duck_typing.git
+  git push --quiet --set-upstream upstream documentation
+}
+
+init()
+writeAllDocumentation()
+setup_git()
+commit_documentation_files()
+upload_files()
 
 exit
