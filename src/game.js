@@ -1,6 +1,19 @@
 import { Messages } from './messages.js';
 var randomWords = require('random-words');
 
+
+/**
+* @summary Creates an instance of the game
+* @name DuckTypingGame
+* @class
+*
+* @param {String} somePropName
+* @returns {DuckTypingGame} DuckTypingGame instance
+*
+* @example
+* DuckTypingGame
+*
+*/
 class DuckTypingGame {
   static gameStates = {
     INTRO: 'INTRO',
