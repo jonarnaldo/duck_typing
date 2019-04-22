@@ -90,7 +90,7 @@ class App extends Component {
               <span>Game Over</span>
               <div className="final-stats">
                 <span>stats:</span>
-                <div className="final-summary">word streaks: {this.getSummary()}</div>
+                <div className="final-summary">word streak: {this.getSummary()}</div>
                 <div className="final-score">final score: {this.state.summary.score}</div>
               </div>
             </div>
