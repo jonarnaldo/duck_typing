@@ -8,6 +8,4 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-
-console.log('derp')
 app.listen(9000);
